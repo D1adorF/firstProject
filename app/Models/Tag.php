@@ -5,15 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class category extends Model
+class Tag extends Model
 {
     use HasFactory;
 
     public function posts()
     {
-//        dd($this->hasMany(Post::class, 'post_id', 'id')->toSql());
-
-        return $this->hasMany(Post::class, 'category_id', 'id');
+        return $this->belongsToMany(Post::class, 'post_tags', 'tag_id', 'post_id');
     }
-
 }
+
