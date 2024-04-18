@@ -16,6 +16,7 @@ class PostController extends Controller
     {
 
         $posts = Post::all();
+//        dd($posts);
         return view('post.index', compact('posts'));
 
 
@@ -28,21 +29,27 @@ class PostController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('post.create', compact('categories'));
+        $tags = Tag::all();
+        return view('post.create', compact('categories', 'tags'));
     }
 
     public function store()
     {
         $data = request()->validate([
-            'title' => 'string',
+            'title' => 'required|string',
             'content' => 'string',
             'image' => 'string',
             'category_id' => '',
+            'tags' => '',
         ]);
-        Post::create($data);
-        $categories = Category::all();
+        $tags = $data['tags'];
+        unset($data['tags']);
 
-        return redirect()->route('post.index', compact('categories'));
+        $post = Post::create($data);
+        $post->tags()->attach($tags);
+
+        //Тут я охеривал (почитать об отношениях подробнее и их реализации)
+        return redirect()->route('post.index');
     }
 
     public function show(Post $post)
@@ -53,8 +60,9 @@ class PostController extends Controller
 
     public function edit(Post $post)
     {
+        $tags = Tag::all();
         $categories = Category::all();
-        return view('post.edit', compact('post', 'categories'));
+        return view('post.edit', compact('post', 'categories', 'tags'));
     }
 
     public function update(Post $post)
@@ -64,8 +72,14 @@ class PostController extends Controller
             'content' => 'string',
             'image' => 'string',
             'category_id' => '',
+            'tags' => '',
         ]);
+        $tags = $data['tags'];
+        unset($data['tags']);
+
         $post->update($data);
+        $post->tags()->sync($tags); //attach неподходит, т.к. добовляет привязки, но не удаляет те с которыми уже не связан
+//        $post = $post->fresh(); не обязательно так как цепляемся к id-щнику
         return redirect()->route('post.show', $post->id);
     }
 
