@@ -9,10 +9,10 @@ class Category extends Model
 {
     use HasFactory;
 
-    public function posts()
-    {
-//        dd($this->hasMany(Post::class, 'post_id', 'id')->toSql());
+    protected $guarded = false;
 
-        return $this->hasMany(Post::class, 'category_id', 'id');
+    public function Post()
+    {
+        return $this->hasMany(Post::class);
     }
 }
