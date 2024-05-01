@@ -7,5 +7,8 @@
         @foreach($posts as $post)
             <div><a href="{{ route('post.show', $post->id) }}"><h3>{{ $post->id }}. {{ $post->title  }}</h3></a></div>
         @endforeach
+        <div class="mt-4">
+            {{ $posts->links() }}
+        </div>
     </div>
 @endsection
