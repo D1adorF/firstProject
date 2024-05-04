@@ -1,12 +1,5 @@
 <?php
 
-use App\Http\Controllers\Post\CreateController;
-use App\Http\Controllers\Post\DestroyController;
-use App\Http\Controllers\Post\EditController;
-use App\Http\Controllers\Post\IndexController;
-use App\Http\Controllers\Post\ShowController;
-use App\Http\Controllers\Post\StoreController;
-use App\Http\Controllers\Post\UpdateController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MyPlaceController;
 use App\Http\Controllers\PostController;
@@ -41,7 +34,17 @@ Route::group(['namespace' => 'App\Http\Controllers\Post'], function() {
     Route::patch('posts/{post}', 'UpdateController')->name('post.update');
     Route::delete('posts/{post}', 'DestroyController')->name('post.delete');
 });
-
+/*
+Route::group(['namespace' => 'Admin'], function() {
+//    Route::get('/admin', 'IndexController')->name('main.index');
+    Route::group(['namespace' => 'Post'], function() {
+        Route::get('/post', 'IndexController')->name('main.index');
+ */
+Route::prefix('admin')->namespace('App\Http\Controllers\Admin')->group(function (){
+    Route::namespace('Post')->group( function (){
+        Route::get('/post', 'IndexController')->name('admin.post.index');
+    });
+});
 
 Route::get('/posts/update', [PostController::class, 'update']);
 Route::get('/posts/delete', [PostController::class, 'delete']);
