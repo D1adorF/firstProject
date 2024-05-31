@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MyPlaceController;
 use App\Http\Controllers\PostController;
@@ -18,9 +19,12 @@ use App\Http\Controllers\AboutController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+//    return view('welcome');
+//});
+
+Route::get('/', [HomeController::class, 'index']);
+
 
 //Route::get('/posts', IndexController::class)->name('post.index');
 
@@ -54,3 +58,7 @@ Route::get('/posts/update_or_create', [PostController::class, 'updateOrCreate'])
 Route::get('/main', [MainController::class, 'index'])->name('main.index');
 Route::get('/contacts', [ContactController::class, 'index'])->name('contact.index');
 Route::get('/about', [AboutController::class, 'index'])->name('about.index');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
