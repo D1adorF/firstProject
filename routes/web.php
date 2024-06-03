@@ -23,7 +23,7 @@ use App\Http\Controllers\AboutController;
 //    return view('welcome');
 //});
 
-Route::get('/', [HomeController::class, 'index']);
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 
 //Route::get('/posts', IndexController::class)->name('post.index');
@@ -44,7 +44,7 @@ Route::group(['namespace' => 'Admin'], function() {
     Route::group(['namespace' => 'Post'], function() {
         Route::get('/post', 'IndexController')->name('main.index');
  */
-Route::prefix('admin')->namespace('App\Http\Controllers\Admin')->group(function (){
+Route::prefix('admin')->namespace('App\Http\Controllers\Admin') ->middleware('admin')->group(function (){
     Route::namespace('Post')->group( function (){
         Route::get('/post', 'IndexController')->name('admin.post.index');
     });
