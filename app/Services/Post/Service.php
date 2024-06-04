@@ -3,6 +3,7 @@
 namespace App\Services\Post;
 
 use App\Models\Post;
+use function PHPUnit\Framework\returnArgument;
 
 class Service
 {
@@ -12,6 +13,8 @@ class Service
         unset($data['tags']);
         $post = Post::create($data);
         $post->tags()->attach($tags);
+
+        return $post;
     }
 
     public function update($post, $data)
@@ -21,6 +24,6 @@ class Service
 
         $post->update($data);
         $post->tags()->sync($tags); //attach неподходит, т.к. добовляет привязки, но не удаляет те с которыми уже не связан
-//        $post = $post->fresh(); не обязательно так как цепляемся к id-щнику
+        return $post->fresh(); //не обязательно когда цепляемся к id-щнику
     }
 }
